@@ -42,11 +42,7 @@ class ProductsController extends Controller
 
     public function findId(string $id)
     {
-        // $products = Products::find($id);
-        // if (!$products){
-        //     return response()->json(['message' => "id not found"], 404);
-        // }
-        $products = Products::findOrFail($id);
+       $products = Products::findOrFail($id);
 
         return new ProductsResource($products);
     }
