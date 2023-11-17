@@ -20,7 +20,7 @@ class ProductsController extends Controller
         $product = $request->validated();
         $exists = Products::where('name', $request->name);
         if ($exists->exists() === true) {
-            return ['message' => 'O nome já está sendo utilizado.'];
+            return ['message' => 'The name is already being used.'];
         }
         
         $newProduct = Products::create($product);      
@@ -33,7 +33,7 @@ class ProductsController extends Controller
         $updateProduct = $request->validated();
         $exists = Products::where('name', $request->name);
         if ($exists->exists() === true) {
-            return ['message' => 'O nome já está sendo utilizado.'];
+            return ['message' => 'The name is already being used.'];
         }
         $products = Products::findOrFail($id);
         $products->update($updateProduct);
@@ -45,7 +45,7 @@ class ProductsController extends Controller
     public function destroy(int $product)
     {
         Products::destroy($product);
-        return ['message' => 'Produto excluído com sucesso.'];
+        return ['message' => 'Product deleted successfully.'];
 
     }
 }
