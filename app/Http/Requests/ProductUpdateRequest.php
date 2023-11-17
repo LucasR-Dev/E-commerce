@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Products;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class ProductUpdateRequest extends FormRequest
 {
@@ -19,7 +21,7 @@ class ProductUpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(Request $request): array
     {
         return [
             'name' => [
@@ -35,5 +37,6 @@ class ProductUpdateRequest extends FormRequest
             'category' =>'required',
             'image' => 'nullable'      
         ];
+
     }
 }
