@@ -18,8 +18,12 @@ class ProductsController extends Controller
     public function store(ProductUpdateRequest $request)
     {
         $data = $request->validated();
-
-        $newProduct = Products::create($data);
+        $exists = Products::where('name', $request->name);
+        if ($exists->exists() === true) {
+            return ["message" => 'O nome já está sendo utilizado.'];
+        } else {
+            $newProduct = Products::create($data);
+        }        
 
         return new ProductsResource($newProduct);
     }
@@ -40,7 +44,22 @@ class ProductsController extends Controller
 
     }
 
-    public function findId(string $id)
+    public function searchName()
+    {
+
+    }
+
+    public function searchCategory()
+    {
+        
+    }
+
+    public function searchImageOrNot()
+    {
+        
+    }
+
+    public function searchId(string $id)
     {
        $products = Products::findOrFail($id);
 
