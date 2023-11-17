@@ -17,26 +17,26 @@ class ProductsController extends Controller
 
     public function store(ProductUpdateRequest $request)
     {
-        $data = $request->validated();
+        $product = $request->validated();
         $exists = Products::where('name', $request->name);
         if ($exists->exists() === true) {
             return ['message' => 'O nome já está sendo utilizado.'];
         }
         
-        $newProduct = Products::create($data);      
+        $newProduct = Products::create($product);      
 
         return new ProductsResource($newProduct);
     }
 
     public function update(ProductUpdateRequest $request, string $id)
     {
-        $data = $request->validated();
+        $updateProduct = $request->validated();
         $exists = Products::where('name', $request->name);
         if ($exists->exists() === true) {
             return ['message' => 'O nome já está sendo utilizado.'];
         }
         $products = Products::findOrFail($id);
-        $products->update($data);
+        $products->update($updateProduct);
         
 
         return new ProductsResource($products);
