@@ -48,26 +48,4 @@ class ProductsController extends Controller
         return ['message' => 'Produto excluído com sucesso.'];
 
     }
-
-    public function searchName()
-    {
-
-    }
-
-    public function searchCategory()
-    {
-        
-    }
-
-    public function searchImageOrNot()
-    {
-        
-    }
-
-    public function searchId(string $id)
-    {
-       $products = Products::findOrFail($id);
-
-        return new ProductsResource($products);
-    }
 }
