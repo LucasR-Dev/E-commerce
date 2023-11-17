@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Products;
-use App\Http\Resources\ProductsResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Resources\ProductsResource;
+use App\Http\Requests\ProductUpdateRequest;
 
 class ProductsController extends Controller
 {
@@ -18,10 +19,11 @@ class ProductsController extends Controller
     public function store(ProductUpdateRequest $request)
     {
         $product = $request->validated();
-        $exists = Products::where('name', $request->name);
-        if ($exists->exists() === true) {
-            return ['message' => 'The name is already being used.'];
-        }
+        $this->handleProductExists('name', $request->name);
+        // $exists = Products::where('name', $request->name);
+        // if ($exists->exists() === true) {
+        //     return ['message' => 'The name is already being used.'];
+        // }
         
         $newProduct = Products::create($product);      
 
@@ -31,14 +33,16 @@ class ProductsController extends Controller
     public function update(ProductUpdateRequest $request, string $id)
     {
         $updateProduct = $request->validated();
-        $exists = Products::where('name', $request->name);
-        if ($exists->exists() === true) {
-            return ['message' => 'The name is already being used.'];
-        }
+        $this->handleProductExists('name', $request->name);
+        
+        // $exists = Products::where('name', $request->name);
+        // if ($exists->exists() === true) {
+        //     return ['message' => 'The name is already being used.'];
+        // }
+
         $products = Products::findOrFail($id);
         $products->update($updateProduct);
         
-
         return new ProductsResource($products);
     }
 
@@ -47,5 +51,12 @@ class ProductsController extends Controller
         Products::destroy($product);
         return ['message' => 'Product deleted successfully.'];
 
+    }
+
+    private function handleProductExists($validate, $param)
+    {
+        $model = Products::where($validate, $param);
+
+        abort_if($model->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'The name is already being used.');
     }
 }
