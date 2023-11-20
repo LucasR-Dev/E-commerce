@@ -94,4 +94,11 @@ class ProductsController extends Controller
 
         return ProductsResource::collection($products->get());        
     }
+
+    public function searchId(string $id)
+    {
+        $product = Products::findOrFail($id);
+
+        return new ProductsResource($product);
+    }
 }

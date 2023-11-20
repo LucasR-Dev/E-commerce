@@ -19,11 +19,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/products/{id}', [ProductsController::class, 'searchId']);
 Route::apiResource('/products', ProductsController::class);
 Route::get('/search', [ProductsController::class, 'search']);
 Route::get('/search/{category}', [ProductsController::class, 'searchCategory']);
 
-// Route::get('/products/{id}', [ProductsController::class, 'findId']);
+
 // Route::get('/products', [ProductsController::class, 'index']);
 // Route::post('/products', [ProductsController::class, 'store']);
 // Route::patch('/products/{id}', [ProductsController::class, 'update']);
