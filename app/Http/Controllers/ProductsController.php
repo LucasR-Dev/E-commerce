@@ -7,17 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Resources\ProductsResource;
 use App\Http\Requests\ProductUpdateRequest;
-use GuzzleHttp\Psr7\Response as Psr7Response;
-use Illuminate\Http\Client\Response as ClientResponse;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Response as FacadesResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ProductsController extends Controller
 {
     public function index(Request $request)
     {
-        $products = Products::all();
+        $products = Products::paginate(5);
         return ProductsResource::collection($products);
 
         // $products = Products::query();

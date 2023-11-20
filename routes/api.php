@@ -21,8 +21,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/products/{id}', [ProductsController::class, 'searchId']);
 Route::apiResource('/products', ProductsController::class);
-Route::get('/search', [ProductsController::class, 'search']);
 Route::get('/search/{category}', [ProductsController::class, 'searchCategory']);
+Route::get('/search', [ProductsController::class, 'search']);
+
 
 
 // Route::get('/products', [ProductsController::class, 'index']);
