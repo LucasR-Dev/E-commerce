@@ -78,6 +78,10 @@ class ProductsController extends Controller
             $products->where('name', 'LIKE', '%'.$request->name.'%');
         }
 
+        if ($request->has('category')) {
+            $products->where('category', 'LIKE', '%'.$request->category.'%');
+        }
+
         return ProductsResource::collection($products->get());
     }
 
