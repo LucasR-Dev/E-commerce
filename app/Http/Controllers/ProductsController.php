@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Resources\ProductsResource;
 use App\Http\Requests\ProductUpdateRequest;
+use GuzzleHttp\Psr7\Response as Psr7Response;
+use Illuminate\Http\Client\Response as ClientResponse;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Response as FacadesResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ProductsController extends Controller
 {
@@ -81,13 +85,12 @@ class ProductsController extends Controller
         return ProductsResource::collection($products->get());
     }
 
-    public function searchCategory(Request $request)
+    public function searchCategory(Request $request, string $category)
     {
         $products = Products::query();
+        $products->where('category', $category);
 
-        if ($request->has('category')) {
-            $products->where('category', 'LIKE', '%'.$request->category.'%');
-        }
+        throw_if($products->get(), new HttpException(204, "Categoria não encontrada!"));
 
         return ProductsResource::collection($products->get());        
     }
