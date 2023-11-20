@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Console\Commands\products as CommandsProducts;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -79,7 +80,7 @@ class ProductsController extends Controller
         }
 
         if ($request->has('category')) {
-            $products->where('category', 'LIKE', '%'.$request->category.'%');
+            $products->where('category', 'LIKE', '%'. $request->category .'%');
         }
 
         return ProductsResource::collection($products->get());
@@ -92,10 +93,14 @@ class ProductsController extends Controller
         return new ProductsResource($product);
     }
 
-    // public function searchCategory(string $category)
-    // {
-    //     $product = Products::findOrFail($category);
+    public function image($whitImage, $noImage)
+    {
+        // $image = Products::query();
 
-    //     return new ProductsResource($product);
-    // }
+        // if($image->whereNull('image')) {
+            // }
+
+        // return ProductsResource::collection($image->get());
+    }
+
 }
