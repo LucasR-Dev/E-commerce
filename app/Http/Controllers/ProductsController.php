@@ -93,14 +93,15 @@ class ProductsController extends Controller
         return new ProductsResource($product);
     }
 
-    public function image($whitImage, $noImage)
+    public function image()
     {
-        // $image = Products::query();
+        
+        $image = Products::query();
 
-        // if($image->whereNull('image')) {
-            // }
+        if($image->where('image')) {
+        }
 
-        // return ProductsResource::collection($image->get());
+        return ProductsResource::collection($image->get());
     }
 
 }
