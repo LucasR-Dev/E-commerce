@@ -90,7 +90,7 @@ class ProductsController extends Controller
         $products = Products::query();
         $products->where('category', $category);
 
-        throw_if($products->get(), new HttpException(204, "Categoria não encontrada!"));
+        throw_if($products->get(), new HttpException(204, "Category is not found!"));
 
         return ProductsResource::collection($products->get());        
     }
