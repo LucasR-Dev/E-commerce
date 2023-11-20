@@ -19,10 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/products/{id}', [ProductsController::class, 'searchId']);
-Route::apiResource('/products', ProductsController::class);
-Route::get('/search/{category}', [ProductsController::class, 'searchCategory']);
+
+Route::get('/search/{id}', [ProductsController::class, 'searchId']);
 Route::get('/search', [ProductsController::class, 'search']);
+Route::apiResource('/products', ProductsController::class);
+
 
 
 

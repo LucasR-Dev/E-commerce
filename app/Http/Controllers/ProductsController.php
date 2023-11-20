@@ -81,20 +81,17 @@ class ProductsController extends Controller
         return ProductsResource::collection($products->get());
     }
 
-    public function searchCategory(Request $request, string $category)
-    {
-        $products = Products::query();
-        $products->where('category', $category);
-
-        throw_if($products->get(), new HttpException(204, "Category is not found!"));
-
-        return ProductsResource::collection($products->get());        
-    }
-
     public function searchId(string $id)
     {
         $product = Products::findOrFail($id);
 
         return new ProductsResource($product);
     }
+
+    // public function searchCategory(string $category)
+    // {
+    //     $product = Products::findOrFail($category);
+
+    //     return new ProductsResource($product);
+    // }
 }
