@@ -46,10 +46,10 @@ class ImportProducts extends Command
         if ($localProduct) {
             // Atualiza os dados existentes
             $localProduct->update($productData);
-        } else {
+        }
             // Cria um novo produto local
             Products::create($productData);
-        }
+        
 
         $this->info('Produto importado com sucesso');
     }
