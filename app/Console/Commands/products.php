@@ -11,7 +11,7 @@ class products extends Command
      *
      * @var string
      */
-    protected $signature = 'products:import';
+    protected $signature = 'products:import {--id=} {id}';
 
     /**
      * The console command description.
@@ -25,6 +25,6 @@ class products extends Command
      */
     public function handle()
     {
-        //
+      
     }
 }
