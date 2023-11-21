@@ -2,11 +2,16 @@
 
 namespace App\Console;
 
+use App\Console\Commands\ImportProducts;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
+    protected $commands = [
+        ImportProducts::class,
+    ];
+    
     /**
      * Define the application's command schedule.
      */
