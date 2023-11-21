@@ -18,7 +18,7 @@ class products extends Command
      *
      * @var string
      */
-    protected $description = 'This command will import the requested item using the id';
+    protected $description = 'command to import data from another api';
 
     /**
      * Execute the console command.

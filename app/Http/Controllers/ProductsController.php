@@ -93,15 +93,18 @@ class ProductsController extends Controller
         return new ProductsResource($product);
     }
 
-    public function image()
+    public function image(Request $request)
     {
+        $query = Products::query();
         
-        $image = Products::query();
-
-        if($image->where('image')) {
+        if ($request->has('with_image')) {
+            $query->whereNotNull('image');
         }
+        
 
-        return ProductsResource::collection($image->get());
+        $products = $query->get();
+
+        return response()->json($products);
     }
 
-}
+    }
