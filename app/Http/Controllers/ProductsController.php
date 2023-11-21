@@ -30,7 +30,7 @@ class ProductsController extends Controller
     {
         
         $product = $request->validated();
-        $this->handleProductExists('name', $request->name);
+        $this->handleProductExists('title', $request->title);
         // $exists = Products::where('name', $request->name);
         // if ($exists->exists() === true) {
         //     return ['message' => 'The name is already being used.'];
@@ -44,7 +44,7 @@ class ProductsController extends Controller
     public function update(ProductUpdateRequest $request, string $id)
     {
         $updateProduct = $request->validated();
-        $this->handleProductExists('name', $request->name);
+        $this->handleProductExists('title', $request->title);
         
         // $exists = Products::where('name', $request->name);
         // if ($exists->exists() === true) {
@@ -75,8 +75,8 @@ class ProductsController extends Controller
     {
         $products = Products::query();
 
-        if ($request->has('name')) {
-            $products->where('name', 'LIKE', '%'.$request->name.'%');
+        if ($request->has('title')) {
+            $products->where('title', 'LIKE', '%'.$request->title.'%');
         }
 
         if ($request->has('category')) {

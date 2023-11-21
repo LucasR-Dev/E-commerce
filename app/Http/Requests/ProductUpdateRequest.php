@@ -24,7 +24,7 @@ class ProductUpdateRequest extends FormRequest
     public function rules(Request $request): array
     {
         return [
-            'name' => [
+            'title' => [
                 'required',
                 'min:3',
                 'max:255',
