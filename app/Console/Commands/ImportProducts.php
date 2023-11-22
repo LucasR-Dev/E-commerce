@@ -35,8 +35,8 @@ class ImportProducts extends Command
         $productData = $response->json();
 
         // Verifica se o campo 'name' está presente nos dados
-        if (!isset($productData['title'])) {
-            $this->error('O campo "title" é obrigatório e deve estar presente nos dados importados.');
+        if (!isset($productData['name'])) {
+            $this->error('O campo "name" é obrigatório e deve estar presente nos dados importados.');
             return;
         }
 
