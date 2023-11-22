@@ -23,10 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('/api/products', [ProductsController::class, 'index']);
+Route::post('/api/products', [ProductsController::class, 'store']);
 Route::get('/api/search/{id}', [ProductsController::class, 'searchId']);
 Route::get('/api/search', [ProductsController::class, 'search']);
-Route::get('/api/image', [ProductsController::class, 'image']);
-Route::post('/api/products', [ProductsController::class, 'store']);
+Route::get('/api/products/with-images', [ProductsController::class, 'getProductsWithImages']);
+Route::get('/api/products/without-images', [ProductsController::class, 'getProductsWithoutImages']);
 
 // Route::patch('/products/{id}', [ProductsController::class, 'update']);
 // Route::delete('/products/{id}', [ProductsController::class, 'destroy']);
