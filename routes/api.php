@@ -19,18 +19,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::apiResource('/products', ProductsController::class);
-
-
 Route::get('/api/products', [ProductsController::class, 'index']);
 Route::post('/api/products', [ProductsController::class, 'store']);
 Route::get('/api/search/{id}', [ProductsController::class, 'searchId']);
 Route::get('/api/search', [ProductsController::class, 'search']);
 Route::get('/api/products/with-images', [ProductsController::class, 'getProductsWithImages']);
 Route::get('/api/products/without-images', [ProductsController::class, 'getProductsWithoutImages']);
-
-// Route::patch('/products/{id}', [ProductsController::class, 'update']);
-// Route::delete('/products/{id}', [ProductsController::class, 'destroy']);
+Route::put('/api/products/{id}', [ProductsController::class, 'update']);
+Route::delete('/api/products/{id}', [ProductsController::class, 'destroy']);
 
 Route::get('/', function () {
     return response()->json([

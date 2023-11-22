@@ -43,15 +43,14 @@ class ProductsController extends Controller
 
     public function update(ProductUpdateRequest $request, string $id)
     {
-        $updateProduct = $request->validated();
-        $this->handleProductExists('name', $request->name);
-        
-        // $exists = Products::where('name', $request->name);
-        // if ($exists->exists() === true) {
-        //     return ['message' => 'The name is already being used.'];
-        // }
-
         $products = Products::findOrFail($id);
+
+        $updateProduct = $request->validated();  
+        
+        if($products->name != $request->name) {
+            $this->handleProductExists('name', $request->name);
+        }
+
         $products->update($updateProduct);
         
         return new ProductsResource($products);
