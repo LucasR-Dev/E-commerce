@@ -2,28 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Console\Commands\products as CommandsProducts;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Resources\ProductsResource;
 use App\Http\Requests\ProductUpdateRequest;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+
 
 class ProductsController extends Controller
 {
     public function index(Request $request)
     {
         $products = Products::paginate(5);
+
         return ProductsResource::collection($products);
-
-        // $products = Products::query();
-
-        // if ($request->has('name')) {
-        //     $products->where('name', 'LIKE', '%'.$request->name.'%');
-        // }
-
-        // return ProductsResource::collection($products->get());
+        
     }
 
     public function store(ProductUpdateRequest $request)
@@ -31,11 +24,7 @@ class ProductsController extends Controller
         
         $product = $request->validated();
         $this->handleProductExists('name', $request->name);
-        // $exists = Products::where('name', $request->name);
-        // if ($exists->exists() === true) {
-        //     return ['message' => 'The name is already being used.'];
-        // }
-        
+                
         $newProduct = Products::create($product);      
 
         return new ProductsResource($newProduct);
