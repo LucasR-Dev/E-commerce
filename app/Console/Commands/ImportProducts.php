@@ -33,12 +33,7 @@ class ImportProducts extends Command
 
         // Decodifica os dados JSON da resposta
         $productData = $response->json();
-
-        // Verifica se o campo 'name' está presente nos dados
-        if (!isset($productData['name'])) {
-            $this->error('O campo "name" é obrigatório e deve estar presente nos dados importados.');
-            return;
-        }
+        $productData['name'] = $productData['title'];
 
         // Verifica se o produto já existe localmente
         $localProduct = Products::find($productId);
