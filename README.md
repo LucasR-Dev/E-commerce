@@ -30,7 +30,7 @@ Desenvolvi as principais operações para o gerenciamento de um catálogo de pro
 
 # Endpoints de criação e atualização em formato de payload:
 
-JSON:
+```json
 {
     "name": "product name",
     "price": 109.95,
@@ -38,6 +38,7 @@ JSON:
     "category": "test",
     "image": "<https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg>"
 }
+``````
 
 OBS: Endpoints de criação e atualização possúi uma camada de validação.
 
@@ -68,28 +69,28 @@ https://fakestoreapi.com/docs
 # Rotas
 
 Route::get('/api/products', [ProductsController::class, 'index']);
--> http://127.0.0.1:8000/api/products?page=1 (Ver todos os produtos por páginas)
+---> http://127.0.0.1:8000/api/products?page=1 (Ver todos os produtos por páginas)
 
 Route::post('/api/products', [ProductsController::class, 'store']);
--> http://127.0.0.1:8000/api/products (Criar produto)
+---> http://127.0.0.1:8000/api/products (Criar produto)
 
 Route::put('/api/products/{id}', [ProductsController::class, 'update']);
--> http://127.0.0.1:8000/api/products/id (Atualiza determinado produto)
+---> http://127.0.0.1:8000/api/products/id (Atualiza determinado produto)
 
 Route::delete('/api/products/{id}', [ProductsController::class, 'destroy']);
--> http://127.0.0.1:8000/api/products/id (Deleta determinado produto através do ID)
+---> http://127.0.0.1:8000/api/products/id (Deleta determinado produto através do ID)
 
 Route::get('/api/search/{id}', [ProductsController::class, 'searchId']);
--> http://127.0.0.1:8000/api/search/id (Procurar produto pelo ID)
+---> http://127.0.0.1:8000/api/search/id (Procurar produto pelo ID)
 
 Route::get('/api/search', [ProductsController::class, 'search']);
- -> http://127.0.0.1:8000/api/search?name=Lucas&category=test (Procurar produto pelo e/ou categoria)
+---> http://127.0.0.1:8000/api/search?name=Lucas&category=test (Procurar produto pelo e/ou categoria)
 
- Route::get('/api/products/with-images', [ProductsController::class, 'getProductsWithImages']);
- -> http://127.0.0.1:8000/api/products/with-images (Busca produtos apenas com imagens)
+Route::get('/api/products/with-images', [ProductsController::class, 'getProductsWithImages']);
+---> http://127.0.0.1:8000/api/products/with-images (Busca produtos apenas com imagens)
 
- Route::get('/api/products/without-images', [ProductsController::class, 'getProductsWithoutImages']);
- -> http://127.0.0.1:8000/api/products/without-images (Busca produtos apenas sem imagens)
+Route::get('/api/products/without-images', [ProductsController::class, 'getProductsWithoutImages']);
+---> http://127.0.0.1:8000/api/products/without-images (Busca produtos apenas sem imagens)
 
 
 
