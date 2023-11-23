@@ -16,14 +16,16 @@ Desenvolvi as principais operações para o gerenciamento de um catálogo de pro
 
 
 # Estrutura do Produto:
-Campo           Tipo        Obrigatório        Pode se repedir
+| Campo       | Tipo      | Obrigatório     | Pode se repedir |
+| :---        | :---      | :---            | ---:            |
+| id          | int       | true            | false           |
+| name        | string    | true            | false           |
+| price       | float     | true            | true            |  
+| description | text      | true            | true            |
+| category    | string    | true            | true            |
+| image_url   | url       | false           | true            |
 
-id              int          true              false
-name            string       true              false
-price           float        true              true   
-description     text         true              true
-category        string       true              true
-image_url       url          false             true
+
 
 
 # Endpoints de criação e atualização em formato de payload:
