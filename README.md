@@ -38,7 +38,7 @@ Desenvolvi as principais operações para o gerenciamento de um catálogo de pro
     "category": "test",
     "image": "<https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg>"
 }
-``````
+```
 
 OBS: Endpoints de criação e atualização possúi uma camada de validação.
 
@@ -66,8 +66,7 @@ API utilizada para importar os produtos:
 https://fakestoreapi.com/docs
 
 
-| # Rotas |
-| :---    |
+# Rotas
 
 Route::get('/api/products', [ProductsController::class, 'index']);
 
