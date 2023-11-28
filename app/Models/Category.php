@@ -12,6 +12,6 @@ class Category extends Model
     protected $fillable = [
         'id',
         'name',
-        'slug'
+        'slug' // Acessar com uma url amigável.
     ];
 }
