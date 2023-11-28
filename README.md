@@ -1,6 +1,6 @@
 # Projeto E-commerce
 Este projeto é um CRUD através de uma API REST com Laravel.
-O setup foi feito usando o artisan serve.
+O setup foi feito usando o artisan serve. Use o banco de dados Mysql
 
 
 # Funcionalidades implementadas:
@@ -14,6 +14,8 @@ Desenvolvi as principais operações para o gerenciamento de um catálogo de pro
 * Atualização
 * Exclusão
 
+Com testes usando o PHPunit
+
 
 # Estrutura do Produto:
 | Campo       | Tipo      | Obrigatório     | Pode se repedir |
@@ -22,10 +24,37 @@ Desenvolvi as principais operações para o gerenciamento de um catálogo de pro
 | name        | string    | true            | false           |
 | price       | float     | true            | true            |  
 | description | text      | true            | true            |
-| category    | string    | true            | true            |
+| category_id | int       | true            | true            |
 | image_url   | url       | false           | true            |
+| user_id     | int       | true            | true            |
 
+# Category
+| Campo       | Tipo      | Obrigatório     | Pode se repedir |
+| :---        | :---      | :---            | ---:            |
+| id          | int       | true            | false           |
+| name        | string    | true            | false           |
 
+# Estrutura do Usuario: Conforme modelo padrão do Laravel
+Ao criar um produto ele deve ter um usuario, disponibilizar rotas de usuario para
+
+* Criação (Quando criado deve receber um email de boas vindas)
+* Atualização
+* Exclusão
+
+Um usuario deve poder se authenticar, com email e senha.
+Você deve criar um comando para importar usuarios do fakestoreapi usando a rota 'https://fakestoreapi.com/users?limit=20'
+Este comando deve ser agendado para rodar de 2 em 2 minutos
+
+Você deve criar seeds e factorys para todas as models
+
+Comando de exemplo:
+
+php artisan users:import
+
+# Atualização em massa
+Você deve criar uma rota que pode atualizar todos os preços de uma determinada categoria:
+
+* parametros (user_id, category_id, percentual_ajuste_preco) somente os produtos que pertencem ao usuario
 
 
 # Endpoints de criação e atualização em formato de payload:
@@ -112,8 +141,3 @@ http://127.0.0.1:8000/api/products/with-images (Busca produtos apenas com imagen
 Route::get('/api/products/without-images', [ProductsController::class, 'getProductsWithoutImages']);
 
 http://127.0.0.1:8000/api/products/without-images (Busca produtos apenas sem imagens)
-
-
-
-
-
