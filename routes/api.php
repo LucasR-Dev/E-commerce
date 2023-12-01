@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,8 @@ Route::get('/api/search/{id}', [ProductsController::class, 'searchId']);
 Route::get('/api/search', [ProductsController::class, 'search']);
 Route::get('/api/products/with-images', [ProductsController::class, 'getProductsWithImages']);
 Route::get('/api/products/without-images', [ProductsController::class, 'getProductsWithoutImages']);
+
+Route::post('/api/register', [UserController::class, 'store']);
 
 Route::get('/', function () {
     return response()->json([
