@@ -29,7 +29,9 @@ Route::get('/api/search', [ProductsController::class, 'search']);
 Route::get('/api/products/with-images', [ProductsController::class, 'getProductsWithImages']);
 Route::get('/api/products/without-images', [ProductsController::class, 'getProductsWithoutImages']);
 
-Route::post('/api/register', [UserController::class, 'store']);
+
+Route::get('/api/show', [UserController::class, 'index']);
+Route::get('/api/user/{id}', [UserController::class, 'show']);
 
 Route::get('/', function () {
     return response()->json([

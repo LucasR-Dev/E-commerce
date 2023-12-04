@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -12,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return User::paginate(5);
     }
 
     /**
@@ -28,7 +29,12 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::find($id);
+        if ($user) {
+            return response()->json($user);
+        } else {
+        return response()->json(['error' => 'User not found.'], 404);
+        }
     }
 
     /**

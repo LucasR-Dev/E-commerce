@@ -26,11 +26,11 @@ class ProductsFactory extends Factory
     {
         return [
             'name' => fake()->unique()->name(),
-            'price' => fake()->price(),
-            'description' => fake()->description(),
-            'category_id' =>fake()->category_id(),
+            'price' => fake()->randomFloat(2, 0, 1000),
+            'description' => fake()->text(),
+            'category_id' => fake()->numberBetween(1, 20),
             'image' => fake()->image(),
-            'user_id' => fake()->user_id()
+            'user_id' => fake()->numberBetween(1, 20),
 
 
         ];

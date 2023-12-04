@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductsResource;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use App\Http\Resources\ProductsResource;
 
 class ProductsController extends Controller
 {
@@ -14,7 +15,9 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        //
+        $products = Products::paginate(5);
+
+        return ProductsResource::collection($products);
     }
 
     /**
@@ -22,7 +25,12 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $product = $request->validate();
+        // $this->handleProductExists('name', $request->name);
+
+        // $newProduct = Products::create($product);
+
+        // return new ProductsResource($newProduct);
     }
 
     /**
@@ -47,5 +55,12 @@ class ProductsController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function handleProductExists($validate, $param)
+    {
+        $model = Products::where($validate, $param);
+
+        abort_if($model->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'The name is already being used.');
     }
 }
