@@ -14,4 +14,9 @@ class Category extends Model
         'name',
         'slug' // Acessar com uma url amigável.
     ];
+
+    public function products()
+    {
+        return $this->hasMany(products::class);
+    }
 }
