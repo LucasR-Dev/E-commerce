@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->float('price');
             $table->text('description');
-            $table->integer('category_id');
+            $table->foreignId('category_id')->index();
             $table->string('image')->nullable();
-            $table->integer('user_id');
+            $table->foreignId('user_id')->index();
             $table->timestamps();
         });
     }

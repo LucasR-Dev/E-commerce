@@ -32,6 +32,7 @@ Route::get('/api/products/without-images', [ProductsController::class, 'getProdu
 
 Route::get('/api/show', [UserController::class, 'index']);
 Route::get('/api/user/{id}', [UserController::class, 'show']);
+Route::post('/api/create', [UserController::class, 'store']);
 
 Route::get('/', function () {
     return response()->json([

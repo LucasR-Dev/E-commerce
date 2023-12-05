@@ -25,12 +25,7 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        // $product = $request->validate();
-        // $this->handleProductExists('name', $request->name);
-
-        // $newProduct = Products::create($product);
-
-        // return new ProductsResource($newProduct);
+    
     }
 
     /**
@@ -57,10 +52,4 @@ class ProductsController extends Controller
         //
     }
 
-    private function handleProductExists($validate, $param)
-    {
-        $model = Products::where($validate, $param);
-
-        abort_if($model->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'The name is already being used.');
-    }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserCreated;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -21,7 +24,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->toArray();
+
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']), 
+        ]);
+
+        Mail::to($user)->send(new UserCreated($user));
+
+        return response()->json([
+            'message' => 'Usuário criado com sucesso!',
+            'data' => $user
+        ]);
+  
     }
 
     /**
@@ -52,4 +69,13 @@ class UserController extends Controller
     {
         //
     }
+
+//     private function welcomeUser($email)
+//         {
+//             $mensagem = 'Obrigado por se cadastrar!';
+
+//             Mail::raw($mensagem, function ($message) use ($email) {
+//                 $message->to($email)->subject('Bem-vindo à sua aplicação');
+//             });
+//         }
 }
