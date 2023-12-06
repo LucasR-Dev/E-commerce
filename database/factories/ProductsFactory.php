@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\User;
 use App\Models\Products;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,22 +19,37 @@ class ProductsFactory extends Factory
      */
     protected $model = Products::class;
 
-     protected static function newFactory(): Factory 
-     {
-        return ProductsFactory::new();
-     }
+    //  protected static function newFactory(): Factory 
+    //  {
+    //     return ProductsFactory::new();
+    //  }
 
     public function definition(): array
     {
+        $user = User::inRandomOrder()->first() ?? User::factory()->create();
+        $category = Category::inRandomOrder()->first() ?? Category::factory()->create();
+
         return [
             'name' => fake()->unique()->name(),
             'price' => fake()->randomFloat(2, 0, 1000),
             'description' => fake()->text(),
-            'category_id' => fake()->numberBetween(1, 20),
+            'user_id' => $user->id,
+            'category_id' => $category->id,
             'image' => fake()->image(),
-            'user_id' => fake()->numberBetween(1, 20),
+           
 
 
         ];
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class,'category_id');
+
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
     }
 }
