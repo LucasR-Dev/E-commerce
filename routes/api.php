@@ -36,7 +36,7 @@ Route::get('/api/products/with-images', [ProductsController::class, 'getProducts
 Route::get('/api/products/without-images', [ProductsController::class, 'getProductsWithoutImages']);
 
 Route::get('/api/users', [UserController::class, 'index']);
-Route::post('/api/create', [UserController::class, 'store']);
+Route::post('/api/users/create', [UserController::class, 'store']);
 Route::get('/api/search/{id}', [UserController::class, 'show']);
 Route::put('/api/users/{id}', [UserController::class, 'update']);
 Route::delete('/api/users/{id}', [UserController::class, 'destroy']);
