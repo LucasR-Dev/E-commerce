@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
@@ -20,6 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/api/categories', [CategoryController::class, 'index']);
+Route::post('/api/categories', [CategoryController::class, 'store']);
+Route::put('/api/categories/{id}', [CategoryController::class, 'update']);
+Route::delete('/api/categories/{id}', [CategoryController::class, 'destory']);
+
 Route::get('/api/products', [ProductsController::class, 'index']);
 Route::post('/api/products', [ProductsController::class, 'store']);
 Route::put('/api/products/{id}', [ProductsController::class, 'update']);
@@ -29,10 +35,12 @@ Route::get('/api/search', [ProductsController::class, 'search']);
 Route::get('/api/products/with-images', [ProductsController::class, 'getProductsWithImages']);
 Route::get('/api/products/without-images', [ProductsController::class, 'getProductsWithoutImages']);
 
-
-Route::get('/api/show', [UserController::class, 'index']);
-Route::get('/api/user/{id}', [UserController::class, 'show']);
+Route::get('/api/users', [UserController::class, 'index']);
 Route::post('/api/create', [UserController::class, 'store']);
+Route::get('/api/search/{id}', [UserController::class, 'show']);
+Route::put('/api/users/{id}', [UserController::class, 'update']);
+Route::delete('/api/users/{id}', [UserController::class, 'destroy']);
+
 
 Route::get('/', function () {
     return response()->json([
