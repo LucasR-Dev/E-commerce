@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\UserCreated;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
+use App\Mail\UserCreated;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\StoreUpdateUserFormRequest;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
@@ -22,21 +24,20 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUpdateUserFormRequest $request)
     {
-        $data = $request->toArray();
+        $data = $request->validated();
+        $data['password'] = bcrypt($request->password);
+        $this->handleProductExists('name', $request->name);
+                
+        $newUser = User::create($data);
+       
 
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']), 
-        ]);
-
-        Mail::to($user)->send(new UserCreated($user));
+        Mail::to($newUser)->send(new UserCreated($newUser));
 
         return response()->json([
             'message' => 'Usuário criado com sucesso!',
-            'data' => $user
+            'data' => $newUser
         ]);
   
     }
@@ -70,12 +71,12 @@ class UserController extends Controller
         //
     }
 
-//     private function welcomeUser($email)
-//         {
-//             $mensagem = 'Obrigado por se cadastrar!';
+    private function handleProductExists($validate, $param)
+    {
+        $model = User::where($validate, $param);
 
-//             Mail::raw($mensagem, function ($message) use ($email) {
-//                 $message->to($email)->subject('Bem-vindo à sua aplicação');
-//             });
-//         }
+        abort_if($model->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'The name is already being used.');
+    }
+
+
 }

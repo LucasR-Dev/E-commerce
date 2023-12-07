@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUpdateCategoryFormRequest;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -12,15 +14,22 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        return Category::paginate(5);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUpdateCategoryFormRequest $request)
     {
-        //
+        $category = $request->validated();
+        $newCategory = Category::create($category);
+
+        return response()->json([
+            'message' => 'Category created successfully!',
+            'data' => $newCategory
+        ]); 
+
     }
 
     /**

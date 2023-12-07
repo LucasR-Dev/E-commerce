@@ -2,17 +2,18 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Products;
+use App\Models\Category;
+use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
-class ProductUpdateRequest extends FormRequest
+class StoreUpdateProductsFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
-    {   
+    {
         return true;
     }
 
@@ -21,22 +22,28 @@ class ProductUpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(Request $request): array
+    public function rules(): array
     {
         return [
             'name' => [
                 'required',
                 'min:3',
                 'max:255',
-        ],
+            ],
             'price' => 'required',
             'description' => [
                 'required',
-                'min:3'        
-        ],
-            'category' =>'required',
-            'image' => 'nullable'      
+                'min:3'
+            ],
+            'user_id' => [
+                'required',
+                Rule::exists(User::class, 'id'),
+            ],
+            'category_id' => [
+                'required',
+                Rule::exists(Category::class, 'id'),
+            ],
+            'image' => 'nullable'
         ];
-
     }
 }

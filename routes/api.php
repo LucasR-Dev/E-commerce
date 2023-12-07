@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/api/categories', [CategoryController::class, 'index']);
-Route::post('/api/categories', [CategoryController::class, 'store']);
+Route::post('/api/category', [CategoryController::class, 'store']);
 Route::put('/api/categories/{id}', [CategoryController::class, 'update']);
 Route::delete('/api/categories/{id}', [CategoryController::class, 'destory']);
 
