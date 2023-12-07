@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreUpdateUserFormRequest;
+use App\Models\Products;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
@@ -29,17 +30,16 @@ class UserController extends Controller
         $data = $request->validated();
         $data['password'] = bcrypt($request->password);
         $this->handleProductExists('name', $request->name);
-                
+
         $newUser = User::create($data);
-       
+
 
         Mail::to($newUser)->send(new UserCreated($newUser));
 
         return response()->json([
-            'message' => 'Usuário criado com sucesso!',
+            'message' => 'User created successfully!',
             'data' => $newUser
         ]);
-  
     }
 
     /**
@@ -51,32 +51,41 @@ class UserController extends Controller
         if ($user) {
             return response()->json($user);
         } else {
-        return response()->json(['error' => 'User not found.'], 404);
+            return response()->json(['error' => 'User not found.'], 404);
         }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreUpdateUserFormRequest $request, string $id)
     {
-        //
+
+        $user = User::find($id);
+        $updateUser = $request->validated();
+
+        if ($user->name != $request->name) {
+            $this->handleUserExists('name', $request->name);
+        }
+
+        $user->update($updateUser);
+
+        return new UserResource($user);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $user)
     {
-        //
+        Products::destroy($user);
+        return ['message' => 'User deleted successfully.'];
     }
 
-    private function handleProductExists($validate, $param)
+    private function handleUserExists($validate, $param)
     {
         $model = User::where($validate, $param);
 
         abort_if($model->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'The name is already being used.');
     }
-
-
 }

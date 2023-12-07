@@ -28,8 +28,8 @@ class ProductsController extends Controller
     {
         $product = $request->validated();
         $this->handleProductExists('name', $request->name);
-                
-        $newProduct = Products::create($product);      
+
+        $newProduct = Products::create($product);
 
         return new ProductsResource($newProduct);
     }
@@ -39,23 +39,39 @@ class ProductsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Products::find($id);
+        if ($product) {
+            return response()->json($product);
+        } else {
+            return response()->json(['error' => 'Product not found.'], 404);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreUpdateProductsFormRequest $request, string $id)
     {
-        //
+        $products = Products::find($id);
+
+        $productUpdate = $request->validated();
+
+        if ($products->name != $request->name) {
+            $this->handleProductExists('name', $request->name);
+        }
+
+        $products->update($productUpdate);
+
+        return new ProductsResource($products);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $product)
     {
-        //
+        Products::destroy($product);
+        return ['message' => 'Product deleted successfully.'];
     }
 
     private function handleProductExists($validate, $param)
@@ -64,5 +80,4 @@ class ProductsController extends Controller
 
         abort_if($model->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'The name is already being used.');
     }
-
 }

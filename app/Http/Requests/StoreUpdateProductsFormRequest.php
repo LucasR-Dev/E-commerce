@@ -37,11 +37,11 @@ class StoreUpdateProductsFormRequest extends FormRequest
             ],
             'user_id' => [
                 'required',
-                Rule::exists(User::class, 'id'),
+                'exists:users,id',
             ],
             'category_id' => [
                 'required',
-                Rule::exists(Category::class, 'id'),
+                'exists:categories,id'
             ],
             'image' => 'nullable'
         ];
