@@ -26,7 +26,7 @@ class ProductsController extends Controller
      */
     public function store(StoreUpdateProductsFormRequest $request)
     {
-        $product = $request->validated();
+        $product = $request->all();
         $this->handleProductExists('name', $request->name);
 
         $newProduct = Products::create($product);
