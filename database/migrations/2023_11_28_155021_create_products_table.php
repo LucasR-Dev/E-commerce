@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->float('price');
             $table->text('description');
-            $table->foreignIdFor(User::class)->index();
-            $table->foreignIdFor(Category::class)->index();
+            $table->foreignId ('user_id')->constrained();
+            $table->foreignId('category_id')->constrained();
             $table->string('image')->nullable();
             $table->timestamps();
         });

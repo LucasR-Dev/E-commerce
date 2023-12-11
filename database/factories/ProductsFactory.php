@@ -26,15 +26,14 @@ class ProductsFactory extends Factory
 
     public function definition(): array
     {
-        $user = User::inRandomOrder()->first() ?? User::factory()->create();
-        $category = Category::inRandomOrder()->first() ?? Category::factory()->create();
+
 
         return [
             'name' => fake()->unique()->name(),
             'price' => fake()->randomFloat(2, 0, 1000),
             'description' => fake()->text(),
-            'user_id' => $user->id,
-            'category_id' => $category->id,
+            'user_id' => User::factory()->create()->id,
+            'category_id' => Category::factory()->create()->id,
             'image' => fake()->image(),
            
 

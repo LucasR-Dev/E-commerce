@@ -29,7 +29,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
         $data['password'] = bcrypt($request->password);
-        $this->handleProductExists('name', $request->name);
+        $this->handleUserExists('name', $request->name);
 
         $newUser = User::create($data);
 
