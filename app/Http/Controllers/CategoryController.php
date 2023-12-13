@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Category;
-use App\Models\Products;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -77,7 +77,7 @@ class CategoryController extends Controller
 
     public function updateValueByCategory(Request $request): JsonResponse
     {
-        $products = Products::where('user_id', $request->user_id)->where('category_id', $request->category_id)->get();
+        $products = Product::where('user_id', $request->user_id)->where('category_id', $request->category_id)->get();
 
         $prices = [];
         foreach ($products as $product) {

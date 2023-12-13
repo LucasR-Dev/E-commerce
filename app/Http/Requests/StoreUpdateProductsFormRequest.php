@@ -29,6 +29,7 @@ class StoreUpdateProductsFormRequest extends FormRequest
                 'required',
                 'min:3',
                 'max:255',
+                'unique:products,name'
             ],
             'price' => 'required',
             'description' => [

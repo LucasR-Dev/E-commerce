@@ -23,9 +23,9 @@ class User extends Authenticatable
         'password',
     ];
 
-    public function products()
+    public function product()
     {
-        return $this->hasMany(products::class);
+        return $this->hasMany(product::class);
     }
     
      /**

@@ -18,8 +18,8 @@ class Category extends Model
         'slug' // Acessar com uma url amigável.
     ];
 
-    public function products(): HasMany
+    public function product(): HasMany
     {
-        return $this->hasMany(products::class);
+        return $this->hasMany(product::class);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Products;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -16,7 +16,15 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Products::paginate(5);
+   
+        $products = Product::query()
+            ->when(isset(request()->id), fn() => Product::query()->whereId(request()->id))
+            ->when(isset(request()->name), fn() => Product::query()->where("name","like","%".request()->name."%"))
+            ->when(isset(request()->category), fn() => Product::query()->where("category_id", request()->category))
+            ->when(request()->image, fn() => Product::query()->whereNotNull("image"))
+            ->when(!request()->image, fn() => Product::query()->whereNull("image"))
+        ->paginate(50);
+
 
         return ProductsResource::collection($products);
     }
@@ -26,12 +34,12 @@ class ProductsController extends Controller
      */
     public function store(StoreUpdateProductsFormRequest $request)
     {
-        $product = $request->all();
-        $this->handleProductExists('name', $request->name);
+        $requestValidate = $request->validate($request->rules());
 
-        $newProduct = Products::create($product);
+        $newProduct = Product::create($requestValidate);
 
         return new ProductsResource($newProduct);
+    
     }
 
     /**
@@ -39,7 +47,7 @@ class ProductsController extends Controller
      */
     public function show(string $id)
     {
-        $product = Products::find($id);
+        $product = Product::find($id);
         if ($product) {
             return response()->json($product);
         } else {
@@ -52,15 +60,11 @@ class ProductsController extends Controller
      */
     public function update(StoreUpdateProductsFormRequest $request, string $id)
     {
-        $products = Products::find($id);
+        $products = Product::find($id);
+        
+        $requestValidate = $request->validate($request->rules());
 
-        $productUpdate = $request->validated();
-
-        if ($products->name != $request->name) {
-            $this->handleProductExists('name', $request->name);
-        }
-
-        $products->update($productUpdate);
+        $products->update($requestValidate);
 
         return new ProductsResource($products);
     }
@@ -70,13 +74,13 @@ class ProductsController extends Controller
      */
     public function destroy(string $product)
     {
-        Products::destroy($product);
+        Product::destroy($product);
         return ['message' => 'Product deleted successfully.'];
     }
 
     private function handleProductExists($validate, $param)
     {
-        $model = Products::where($validate, $param);
+        $model = Product::where($validate, $param);
 
         abort_if($model->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'The name is already being used.');
     }

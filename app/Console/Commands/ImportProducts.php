@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use App\Models\Products;
+use App\Models\Product;
 
 class ImportProducts extends Command
 {
@@ -36,14 +36,14 @@ class ImportProducts extends Command
         $productData['name'] = $productData['title'];
 
         // Verifica se o produto já existe localmente
-        $localProduct = Products::find($productId);
+        $localProduct = Product::find($productId);
 
         if ($localProduct) {
             // Atualiza os dados existentes
             $localProduct->update($productData);
         }
             // Cria um novo produto local
-            Products::create($productData);
+            Product::create($productData);
         
 
         $this->info('Produto importado com sucesso');

@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreUpdateUserFormRequest;
-use App\Models\Products;
+use App\Models\Product;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
@@ -78,7 +78,7 @@ class UserController extends Controller
      */
     public function destroy(string $user)
     {
-        Products::destroy($user);
+        Product::destroy($user);
         return ['message' => 'User deleted successfully.'];
     }
 

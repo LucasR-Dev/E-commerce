@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\Product;
+use Illuminate\Http\Response;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProductsTest extends TestCase
 {
@@ -15,27 +17,47 @@ class ProductsTest extends TestCase
     {
         $response = $this->getjson('/api/products');
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
     }
 
     public function test_create_a_new_product(): void
     {
-        $response = $this->getjson('/api/products');
+        $data = [
+            'name'=> fake()->name,
+            'price'=> 5,
+            'description'=> 'material escolar',
+            'user_id' => 1,
+            'category_id' => 1,
+        ];
 
-        $response->assertStatus(200);
+        $response = $this->postjson('/api/products', $data);
+
+        $response->assertSuccessful();
     }
 
     public function test_update_product_id(): void
     {
-        $response = $this->putjson('/api/products/{id}');
+        $product = Product::first();
 
-        $response->assertStatus(200);
+        $data = [
+            'name'=> fake()->name,
+            'price'=> 5,
+            'description'=> 'material escolar',
+            'user_id' => 1,
+            'category_id' => 1,
+        ];
+
+        $response = $this->putjson('/api/products/' . $product->id, $data);
+
+        $response->assertSuccessful();
     }
 
     public function test_delete_product_by_id(): void
     {
-        $response = $this->deletejson('/api/products/{id}');
+        $product = Product::first();
+        
+        $response = $this->deletejson('/api/products/' . $product->id);
 
-        $response->assertStatus(200);
+        $response->assertSuccessful();
     }
-}
+ }
