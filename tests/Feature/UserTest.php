@@ -13,7 +13,7 @@ class UserTest extends TestCase
     public function test_returns_user(): void
     {
         $user = User::factory()->create();
-        $response = $this->get("/api/user/{$user->id}");
+        $response = $this->get("/api/search/{$user->id}");
         $response->assertSuccessful()
                  ->assertJson([
                     "id" => $user->id,
