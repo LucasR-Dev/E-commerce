@@ -2,11 +2,13 @@
 
 namespace Tests\Unit;
 
-use App\Models\User;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class UserTest extends TestCase
 {
+    use WithoutMiddleware;
     /**
      * A basic unit test example.
      */

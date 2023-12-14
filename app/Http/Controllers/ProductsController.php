@@ -16,14 +16,14 @@ class ProductsController extends Controller
      */
     public function index()
     {
-   
+
         $products = Product::query()
-            ->when(isset(request()->id), fn() => Product::query()->whereId(request()->id))
-            ->when(isset(request()->name), fn() => Product::query()->where("name","like","%".request()->name."%"))
-            ->when(isset(request()->category), fn() => Product::query()->where("category_id", request()->category))
-            ->when(request()->image, fn() => Product::query()->whereNotNull("image"))
-            ->when(!request()->image, fn() => Product::query()->whereNull("image"))
-        ->paginate(50);
+            ->when(isset(request()->id), fn () => Product::query()->whereId(request()->id))
+            ->when(isset(request()->name), fn () => Product::query()->where("name", "like", "%" . request()->name . "%"))
+            ->when(isset(request()->category), fn () => Product::query()->where("category_id", request()->category))
+            ->when(request()->image, fn () => Product::query()->whereNotNull("image"))
+            ->when(!request()->image, fn () => Product::query()->whereNull("image"))
+            ->paginate(50);
 
 
         return ProductsResource::collection($products);
@@ -39,7 +39,6 @@ class ProductsController extends Controller
         $newProduct = Product::create($requestValidate);
 
         return new ProductsResource($newProduct);
-    
     }
 
     /**
@@ -61,10 +60,14 @@ class ProductsController extends Controller
     public function update(StoreUpdateProductsFormRequest $request, string $id)
     {
         $products = Product::find($id);
-        
+        if (!$products) {
+            return response()->json(['error' => 'Product not found'], 422);
+        }
+
         $requestValidate = $request->validate($request->rules());
 
         $products->update($requestValidate);
+
 
         return new ProductsResource($products);
     }
@@ -72,9 +75,15 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $product)
+    public function destroy( string $id)
     {
-        Product::destroy($product);
+
+        $product = Product::find($id);
+        if (!$product) {
+            return response()->json(['error' => 'Product not found'], 422);
+        }
+
+        $product->delete();
         return ['message' => 'Product deleted successfully.'];
     }
 }

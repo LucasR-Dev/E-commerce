@@ -7,9 +7,11 @@ use App\Models\Product;
 use Illuminate\Http\Response;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class ProductsTest extends TestCase
 {
+    use WithoutMiddleware;
     /**
      * A basic feature test example.
      */

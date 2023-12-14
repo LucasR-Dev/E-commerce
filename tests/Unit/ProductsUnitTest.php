@@ -45,11 +45,9 @@ class ProductsUnitTest extends TestCase
 
         // Recarregar o produto do banco de dados após a atualização
         $update = $product->refresh();
-        
+
         $this->assertEquals($newProduct['name'], $update->name);
         $this->assertInstanceOf(ProductsResource::class, $result);
-
-        
     }
 
     public function test_delete_products(): void
@@ -63,7 +61,5 @@ class ProductsUnitTest extends TestCase
         $this->assertIsArray($response);
 
         $this->assertArrayHasKey('message', $response);
-
-        
     }
 }
