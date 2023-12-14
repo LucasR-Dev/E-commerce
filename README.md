@@ -24,9 +24,10 @@ Com testes usando o PHPunit
 | name        | string    | true            | false           |
 | price       | float     | true            | true            |  
 | description | text      | true            | true            |
+| user_id     | int       | true            | true            |
 | category_id | int       | true            | true            |
 | image_url   | url       | false           | true            |
-| user_id     | int       | true            | true            |
+
 
 # Category
 | Campo       | Tipo      | Obrigatório     | Pode se repedir |
@@ -76,6 +77,7 @@ Você deve criar uma rota que pode atualizar todos os preços de uma determinada
     "name": "user name",
     "slug": "" //Acessar com uma url amigável.
 }
+```
 
 *Produto:
 
