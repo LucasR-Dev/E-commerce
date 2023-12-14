@@ -14,22 +14,23 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+            ]);            
 
-        $user = User::where('email', $request->email)->first();
-        if (!$user ||  !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => 'The provides credentials are incorrect.'
-            ]);
-        }
+            if(Auth::attempt($credentials)) {
 
-        //logout others devices
-        //if ($request->has('logout_others_devices'))
-        $user->tokens()->delete();
+                $token = $request->user()->createToken('auth_token')->plainTextToken;
 
-        $token = $user->createToken($request->device_name)->plainTextToken;
+                return response()->json([
+                    'access_token' => $token,
+                    'token_type' => 'bearer'
+                ]);
+                
+            }
 
-        return response()->json([
-            'token' => $token,
-        ]);
+            return response()->json(["message" =>"The provided credentials do not match our records."]);
     }
 }

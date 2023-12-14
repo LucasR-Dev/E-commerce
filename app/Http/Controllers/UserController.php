@@ -19,7 +19,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::paginate(5);
+        dd(User::all());
+        return User::all()->paginate(5);
     }
 
     /**
