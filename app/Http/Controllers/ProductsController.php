@@ -77,11 +77,4 @@ class ProductsController extends Controller
         Product::destroy($product);
         return ['message' => 'Product deleted successfully.'];
     }
-
-    private function handleProductExists($validate, $param)
-    {
-        $model = Product::where($validate, $param);
-
-        abort_if($model->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'The name is already being used.');
-    }
 }

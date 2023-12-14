@@ -2,9 +2,11 @@
 
 namespace Tests\Unit;
 
+use Mockery;
 use Tests\TestCase;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Contracts\Cache\Store;
 use App\Http\Resources\ProductsResource;
 use App\Http\Controllers\ProductsController;
@@ -32,20 +34,6 @@ class ProductsUnitTest extends TestCase
         $this->assertDatabaseHas('products', ['image' => $product->image]);
         $this->assertInstanceOf(ProductsResource::class, $result);
     }
-
-    public function test_fail_create_products(): void
-    {
-        $product = Product::factory()->make(['name' => '']);
-
-        $productController = app(ProductsController::class);
-
-        $result = $productController->store(new StoreUpdateProductsFormRequest($product->toArray()));
-        dd($result);
-
-        $this->assertDatabaseHas('products', ['name' => $product->name]);
-        $this->assertInstanceOf(ProductsResource::class, $result);
-    }
-
     public function test_update_products(): void
     {
         $product = Product::factory()->create();
@@ -60,6 +48,21 @@ class ProductsUnitTest extends TestCase
         
         $this->assertEquals($newProduct['name'], $update->name);
         $this->assertInstanceOf(ProductsResource::class, $result);
+
+        
+    }
+
+    public function test_delete_products(): void
+    {
+        $product = Product::factory()->create();
+
+        $controller = new ProductsController();
+
+        $response = $controller->destroy($product->id);
+
+        $this->assertIsArray($response);
+
+        $this->assertArrayHasKey('message', $response);
 
         
     }
