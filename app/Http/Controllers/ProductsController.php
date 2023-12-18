@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use App\Http\Resources\ProductsResource;
 use App\Http\Requests\StoreUpdateProductsFormRequest;
+use App\Http\Resources\ProductsResource;
+use Illuminate\Http\JsonResponse;
 
 class ProductsController extends Controller
 {
@@ -16,15 +15,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-
-        $products = Product::query()
-            ->when(isset(request()->id), fn () => Product::query()->whereId(request()->id))
-            ->when(isset(request()->name), fn () => Product::query()->where("name", "like", "%" . request()->name . "%"))
-            ->when(isset(request()->category), fn () => Product::query()->where("category_id", request()->category))
-            ->when(request()->image, fn () => Product::query()->whereNotNull("image"))
-            ->when(!request()->image, fn () => Product::query()->whereNull("image"))
-            ->paginate(50);
-
+        $products = Product::paginate(5);
 
         return ProductsResource::collection($products);
     }
@@ -32,58 +23,49 @@ class ProductsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUpdateProductsFormRequest $request)
+    public function store(StoreUpdateProductsFormRequest $request): JsonResponse
     {
-        $requestValidate = $request->validate($request->rules());
+        $product = $request->validated();
+        $newProduct = Product::create($product);
 
-        $newProduct = Product::create($requestValidate);
-
-        return new ProductsResource($newProduct);
+        return response()->json($newProduct);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $product = Product::find($id);
-        if ($product) {
-            return response()->json($product);
-        } else {
-            return response()->json(['error' => 'Product not found.'], 404);
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(StoreUpdateProductsFormRequest $request, string $id)
+    public function update(StoreUpdateProductsFormRequest $request, int $id): JsonResponse
     {
         $products = Product::find($id);
         if (!$products) {
-            return response()->json(['error' => 'Product not found'], 422);
+            return response()->json(['error' => 'Product not found'], 404);
         }
 
-        $requestValidate = $request->validate($request->rules());
-
+        $requestValidate = $request->validated();
         $products->update($requestValidate);
 
-
-        return new ProductsResource($products);
+        return response()->json($products);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy( string $id)
+    
+    public function destroy(int $id): JsonResponse
     {
 
         $product = Product::find($id);
         if (!$product) {
-            return response()->json(['error' => 'Product not found'], 422);
+            return response()->json(['error' => 'Product not found'], 404);
         }
 
         $product->delete();
-        return ['message' => 'Product deleted successfully.'];
+        return response()->json(['message' => 'Product deleted successfully.']);
     }
+
+    public function searchProductById(int $id): JsonResponse
+    {
+        $product = Product::find($id);
+        if ($product) {
+            return response()->json($product);
+        }
+
+        return response()->json(['error' => 'Product not found.'], 404);
+    }
+
+
 }

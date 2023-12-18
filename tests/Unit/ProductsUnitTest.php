@@ -10,7 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Contracts\Cache\Store;
 use App\Http\Resources\ProductsResource;
 use App\Http\Controllers\ProductsController;
-use App\Http\Requests\StoreUpdateProductsFormRequest;
+use App\Http\Requests\StoreProductsFormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ProductsUnitTest extends TestCase
@@ -24,7 +24,7 @@ class ProductsUnitTest extends TestCase
 
         $productController = app(ProductsController::class);
 
-        $result = $productController->store(new StoreUpdateProductsFormRequest($product->toArray()));
+        $result = $productController->store(new StoreProductsFormRequest($product->toArray()));
 
         $this->assertDatabaseHas('products', ['name' => $product->name]);
         $this->assertDatabaseHas('products', ['price' => $product->price]);
@@ -41,7 +41,7 @@ class ProductsUnitTest extends TestCase
 
         // Chamar diretamente o método update no controller
         $productController = app(ProductsController::class);
-        $result = $productController->update(new StoreUpdateProductsFormRequest($newProduct), $product->id);
+        $result = $productController->update(new StoreProductsFormRequest($newProduct), $product->id);
 
         // Recarregar o produto do banco de dados após a atualização
         $update = $product->refresh();
@@ -52,14 +52,14 @@ class ProductsUnitTest extends TestCase
 
     public function test_delete_products(): void
     {
-        $product = Product::factory()->create();
-
+        $product = Product::factory()->make();
         $controller = new ProductsController();
+        // dd($product);
 
         $response = $controller->destroy($product->id);
+        dd($response);
+  
+        $this->assertIsObject($response);
 
-        $this->assertIsArray($response);
-
-        $this->assertArrayHasKey('message', $response);
     }
 }

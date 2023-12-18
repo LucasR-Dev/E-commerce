@@ -17,6 +17,7 @@ use App\Http\Controllers\ProductsController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::post('/api/users/create', [UserController::class, 'store']);
 Route::post('/api/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -30,10 +31,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/api/products', [ProductsController::class, 'store']);
     Route::put('/api/products/{id}', [ProductsController::class, 'update'])->name('products.update');
     Route::delete('/api/products/{id}', [ProductsController::class, 'destroy']);
-    Route::get('/api/search/{id}', [ProductsController::class, 'searchId']);
+    Route::get('/api/product/search/{id}', [ProductsController::class, 'searchProductById']);
 
     Route::get('/api/users', [UserController::class, 'index']);
-    Route::post('/api/users/create', [UserController::class, 'store']);
     Route::get('/api/search/{id}', [UserController::class, 'show']);
     Route::put('/api/users/{id}', [UserController::class, 'update']);
     Route::delete('/api/users/{id}', [UserController::class, 'destroy']);
