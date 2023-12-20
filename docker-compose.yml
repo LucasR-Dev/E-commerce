@@ -62,6 +62,16 @@ services:
         networks:
             - laravel
 
+    mailhog:
+        container_name: mailhog
+        image: mailhog/mailhog:v1.0.1
+        restart: always
+        ports:
+        - "${CORE_MAIL_SMTP_PORT:-1025}:1025" #smtp server
+        - "${CORE_MAIL_UI_PORT:-8025}:8025" #UI interface
+        networks:
+        - laravel
+
 networks:
     laravel:
         driver: bridge

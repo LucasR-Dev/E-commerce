@@ -29,7 +29,7 @@ class UserCreated extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('jeffrey@example.com', 'Jeffrey Way'),
+            from: new Address('teste@example.com', 'Test One'),
             subject: 'User Created',
         );
     }

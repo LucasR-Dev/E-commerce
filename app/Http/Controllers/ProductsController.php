@@ -10,9 +10,6 @@ use Illuminate\Http\JsonResponse;
 
 class ProductsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $products = Product::paginate(5);
@@ -20,31 +17,33 @@ class ProductsController extends Controller
         return ProductsResource::collection($products);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreUpdateProductsFormRequest $request): JsonResponse
     {
         $product = $request->validated();
         $newProduct = Product::create($product);
 
-        return response()->json($newProduct);
+        return response()->json([
+            'message' => 'Product created successfully',
+            'data' => $newProduct
+        ]);
     }
 
     public function update(StoreUpdateProductsFormRequest $request, int $id): JsonResponse
     {
-        $products = Product::find($id);
-        if (!$products) {
+        $product = Product::find($id);
+        if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
 
         $requestValidate = $request->validated();
-        $products->update($requestValidate);
+        $product->fill($requestValidate)->save();
 
-        return response()->json($products);
+        return response()->json([
+            'message' => 'Product updated successfully!',
+            'data' => $product
+        ]);
     }
 
-    
     public function destroy(int $id): JsonResponse
     {
 
@@ -60,12 +59,13 @@ class ProductsController extends Controller
     public function searchProductById(int $id): JsonResponse
     {
         $product = Product::find($id);
-        if ($product) {
-            return response()->json($product);
+        if (!$product) {
+
+            return response()->json(['error' => 'Product not found.'], 404);
         }
 
-        return response()->json(['error' => 'Product not found.'], 404);
+        return response()->json([
+            'data' => $product
+        ]);
     }
-
-
 }

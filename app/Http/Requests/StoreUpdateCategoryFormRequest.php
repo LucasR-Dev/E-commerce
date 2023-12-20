@@ -23,7 +23,6 @@ class StoreUpdateCategoryFormRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:categories|string',
-            'slug' => 'string'
 
         ];
     }

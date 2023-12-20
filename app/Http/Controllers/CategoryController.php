@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Requests\StoreUpdateCategoryFormRequest;
@@ -27,7 +25,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUpdateCategoryFormRequest $request)
+    public function store(StoreUpdateCategoryFormRequest $request): JsonResponse
     {
         $category = $request->validated();
         $newCategory = Category::create($category);
@@ -38,34 +36,20 @@ class CategoryController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(StoreUpdateCategoryFormRequest $request, int $id): JsonResponse
     {
         $category = Category::find($id);
-        if ($category) {
-            return response()->json($category);
-        } else {
-            return response()->json(['error' => 'User not found.'], 404);
+        if(!$category){
+            return response()->json(['error'=> 'Category not found'], 404);
         }
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $category = Category::find($id);
         $categoryUpdate = $request->validated();
+        $category->fill($categoryUpdate)->save();
 
-        if ($category->name != $request->name) {
-            $this->handleCategoryExists('name', $request->name);
-        }
-
-        $category->update($categoryUpdate);
-
-        return new CategoryResource($category);
+        return response()->json([
+            'message' => 'Category updated successfully!',
+            'data' =>$category
+        ]);
     }
 
     /**
@@ -73,38 +57,47 @@ class CategoryController extends Controller
      */
     public function destroy(string $category)
     {
-        Category::destroy($category);
+        $category = Category::find($category);
+        if(!$category){
+            return response()->json(['error'=> 'Category not found'],404);
+        }
+
+        $category->delete();        
         return ['message' => 'Category deleted successfully.'];
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        $category = Category::find($id);
+        if (!$category) {
+            return response()->json(['error' => 'User not found.'], 404);      
+        }
+        
+        return response()->json([
+            'data' => $category
+        ]);
     }
 
     public function updateValueByCategory(Request $request): JsonResponse
     {
         $products = Product::where('user_id', $request->user_id)->where('category_id', $request->category_id)->get();
 
-        $prices = [];
-        foreach ($products as $product) {
-            $increaseValue = $product->price * ($request->adjustPriceInPercentage / 100);
-            $product->price = $product->price + $increaseValue;
+           foreach ($products as $product) {
+            $oldPrice = $product->price;
+            $updatedValue = $product->price * ($request->adjustPriceInPercentage / 100);
+            $product->price = $product->price + $updatedValue;
             $product->save();
-            $prices[] = [
+            $productsNewPrices[] = [
                 'prod_name' => $product->name,
+                'old_price' => $oldPrice,
                 'new_price' => (int) $product->price,
             ];
         }
 
         return response()->json([
             'message' => 'Prices updated successfully.',
-            'data' => $prices,
+            'data' => $productsNewPrices
         ]);
     }
 
-
-
-
-    private function handleCategoryExists($validate, $param)
-    {
-        $model = Category::where($validate, $param);
-
-        abort_if($model->exists(), Response::HTTP_UNPROCESSABLE_ENTITY, 'The category is already being used');
-    }
 }

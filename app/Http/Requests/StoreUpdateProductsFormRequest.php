@@ -26,6 +26,7 @@ class StoreUpdateProductsFormRequest extends FormRequest
     {
         return [
             'name' => [
+                'sometimes',
                 'required',
                 'min:3',
                 'max:255',

@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Product;
 use App\Mail\UserCreated;
-use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use App\Http\Resources\UserResource;
@@ -38,16 +36,12 @@ class UserController extends Controller
     public function update(UpdateUserFormRequest $request, int $id): JsonResponse
     {
         $user = User::find($id);
-        $updateUser = $request->validated();
-
-        if ($user->name != $updateUser['name']) {
-            $user->fill($updateUser)->save();
-        } else {
-
-            return response()->json([
-                'message' => 'The name has already been taken'
-            ]);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
         }
+
+        $updateUser = $request->validated();
+        $user->fill($updateUser)->save();
 
         return response()->json([
             'message' => 'User updated successfully!',
@@ -55,19 +49,26 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy(string $user)
+    public function destroy(int $userId): JsonResponse
     {
-        Product::destroy($user);
-        return ['message' => 'User deleted successfully.'];
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $user->delete();
+        return response()->json(['message' => 'User deleted successfully.']);
     }
 
-    public function show(string $id)
+    public function show(int $id): JsonResponse
     {
         $user = User::find($id);
-        if ($user) {
-            return response()->json($user);
-        } else {
+        if (!$user) {
             return response()->json(['error' => 'User not found.'], 404);
         }
+
+        return response()->json([
+            'data' => $user
+        ]);
     }
 }
