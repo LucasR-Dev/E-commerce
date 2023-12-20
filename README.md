@@ -75,7 +75,6 @@ Você deve criar uma rota que pode atualizar todos os preços de uma determinada
 ```json
 {
     "name": "user name",
-    "slug": "" //Acessar com uma url amigável.
 }
 ```
 
