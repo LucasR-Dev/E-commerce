@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use App\Models\Product;
 
 class ImportProducts extends Command
 {
@@ -19,6 +20,10 @@ class ImportProducts extends Command
 
         $userId = $this->option('user');
 
+        if (!User::find($userId)) {
+            return $this->error('The user does not exist');
+        }
+
         if (!$userId) {
             return $this->error('--user= field is required.');
         }
@@ -27,7 +32,7 @@ class ImportProducts extends Command
             $response = Http::get('https://fakestoreapi.com/products/' . $productId);
 
             if (!$response->successful()) {
-                $this->error('Erro ao acessar a API externa');
+                $this->error('Error accessing external API');
                 return;
             }
             $productData = $response->json();
@@ -36,7 +41,7 @@ class ImportProducts extends Command
             $response = Http::get('https://fakestoreapi.com/products/');
 
             if (!$response->successful()) {
-                $this->error('Erro ao acessar a API externa');
+                $this->error('Error accessing external API');
                 return;
             }
 
@@ -71,6 +76,6 @@ class ImportProducts extends Command
             Product::create($productData);
         }
 
-        $this->info('Produto importado com sucesso');
+        $this->info('Product imported successfully');
     }
 }
