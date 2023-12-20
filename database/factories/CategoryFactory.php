@@ -27,7 +27,6 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => fake()->unique()->name(),
-            'slug' => fake()->slug() // Acessar com uma url amigável.
         ];
     }
 }

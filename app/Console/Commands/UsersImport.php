@@ -27,7 +27,7 @@ class UsersImport extends Command
      */
     public function handle()
     {
-    $response = Http::get('https://fakestoreapi.com/users?limit=10');
+    $response = Http::get('https://fakestoreapi.com/users');
     $usersData = $response->json();
     // dd($usersData);
 

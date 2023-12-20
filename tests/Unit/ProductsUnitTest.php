@@ -11,22 +11,30 @@ class ProductsUnitTest extends TestCase
     {        
         $product = Product::factory()->create();
     
-        $this->assertDatabaseHas('products', ['name' => $product->name]);
-        $this->assertDatabaseHas('products', ['price' => $product->price]);
-        $this->assertDatabaseHas('products', ['description' => $product->description]);
-        $this->assertDatabaseHas('products', ['user_id' => $product->user->id]);
-        $this->assertDatabaseHas('products', ['category_id' => $product->category->id]);
-        $this->assertDatabaseHas('products', ['image' => $product->image]);
+        $this->assertDatabaseHas('products', [
+            'name' => $product->name,
+            'price' => $product->price,
+            'description' => $product->description,
+            'user_id' => $product->user->id,
+            'category_id' => $product->category->id,
+            'image' => $product->image
+        ]);
     }
     public function test_update_product_name(): void
     {
+        $data = [
+            'name'=> fake()->name,
+            'price'=> 15
+        ];
+
         $product = Product::factory()->create();
-        $newProduct = $product->refresh();
-      
-        $this->assertEquals($product['name'], $newProduct->name);
+        $product->update($data);
+
+        $this->assertDatabaseHas('products', $data);
+
     }
 
-    public function test_delete_products(): void
+    public function test_delete_product(): void
     {
         $product = Product::factory()->create();
 
