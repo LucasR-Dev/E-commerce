@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Routing\Controller;
-use App\Http\Requests\StoreUpdateProductsFormRequest;
-use App\Http\Resources\ProductsResource;
+use App\Models\Category;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Routing\Controller;
+use App\Http\Resources\ProductsResource;
+use App\Http\Requests\StoreUpdateProductsFormRequest;
 
 class ProductsController extends Controller
 {
@@ -31,12 +33,12 @@ class ProductsController extends Controller
     public function update(StoreUpdateProductsFormRequest $request, int $id): JsonResponse
     {
         $product = Product::find($id);
-        if(!$product){
+        if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
 
         $requestValidate = $request->validated();
-        $product->fill($requestValidate)->save();
+        $product->update($requestValidate);
 
         return response()->json([
             'message' => 'Product updated successfully!',
@@ -48,7 +50,7 @@ class ProductsController extends Controller
     {
 
         $product = Product::find($id);
-        if(!$product){
+        if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
 
@@ -66,6 +68,43 @@ class ProductsController extends Controller
 
         return response()->json([
             'data' => $product
+        ]);
+    }
+
+    public function searchProductByNameAndCategory(Request $request): JsonResponse
+    {
+        $product = Product::query();
+        if ($request->has('name')) {
+            $product->where('name', 'LIKE', '%' . $request['name'] . '%');
+        }
+
+        if ($request->has('category')) {
+            $categories = Category::where('name', 'LIKE', '%' . $request['category'] . '%')->pluck('id');
+            $product->whereIn('category_id', $categories);
+        }
+
+        $result = $product->get();
+
+        return response()->json([
+            'data' => $result
+        ]);
+    }
+
+    public function getProductsWithImages(): JsonResponse
+    {
+        $products = Product::whereNotNull('image')->get();
+
+        return response()->json([
+            'data' => $products
+        ]);
+    }
+
+    public function getProductsWithoutImages(): JsonResponse
+    {
+        $products = Product::whereNull('image')->get();
+
+        return response()->json([
+            'data' => $products
         ]);
     }
 }

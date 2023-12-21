@@ -15,7 +15,6 @@ class Category extends Model
     protected $fillable = [
         'id',
         'name',
-        'slug' // Acessar com uma url amigável.
     ];
 
     public function product(): HasMany

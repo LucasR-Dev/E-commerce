@@ -32,16 +32,22 @@ class StoreUpdateProductsFormRequest extends FormRequest
                 'max:255',
                 'unique:products,name'
             ],
-            'price' => 'required',
+            'price' => [
+                'sometimes',
+                'required'
+            ],
             'description' => [
+                'sometimes',
                 'required',
                 'min:3'
             ],
             'user_id' => [
+                'sometimes',
                 'required',
                 'exists:users,id',
             ],
             'category_id' => [
+                'sometimes',
                 'required',
                 'exists:categories,id'
             ],

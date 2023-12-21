@@ -36,12 +36,12 @@ class UserController extends Controller
     public function update(UpdateUserFormRequest $request, int $id): JsonResponse
     {
         $user = User::find($id);
-        if(!$user){
+        if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
         $updateUser = $request->validated();
-        $user->fill($updateUser)->save();
+        $user->update($updateUser);
 
         return response()->json([
             'message' => 'User updated successfully!',
@@ -52,7 +52,7 @@ class UserController extends Controller
     public function destroy(int $userId): JsonResponse
     {
         $user = User::find($userId);
-        if(!$user){
+        if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
 
@@ -63,7 +63,7 @@ class UserController extends Controller
     public function show(int $id): JsonResponse
     {
         $user = User::find($id);
-        if(!$user){
+        if (!$user) {
             return response()->json(['error' => 'User not found.'], 404);
         }
 

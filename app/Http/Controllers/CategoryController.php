@@ -12,9 +12,6 @@ use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $categories = Category::paginate(5);
@@ -22,9 +19,6 @@ class CategoryController extends Controller
         return CategoryResource::collection($categories);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreUpdateCategoryFormRequest $request): JsonResponse
     {
         $category = $request->validated();
@@ -39,40 +33,37 @@ class CategoryController extends Controller
     public function update(StoreUpdateCategoryFormRequest $request, int $id): JsonResponse
     {
         $category = Category::find($id);
-        if(!$category){
-            return response()->json(['error'=> 'Category not found'], 404);
+        if (!$category) {
+            return response()->json(['error' => 'Category not found'], 404);
         }
 
         $categoryUpdate = $request->validated();
-        $category->fill($categoryUpdate)->save();
+        $category->update($categoryUpdate);
 
         return response()->json([
             'message' => 'Category updated successfully!',
-            'data' =>$category
+            'data' => $category
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $category)
+    public function destroy(int $categoryId): JsonResponse
     {
-        $category = Category::find($category);
-        if(!$category){
-            return response()->json(['error'=> 'Category not found'],404);
+        $category = Category::find($categoryId);
+        if (!$category) {
+            return response()->json(['error' => 'Category not found'], 404);
         }
 
-        $category->delete();        
-        return ['message' => 'Category deleted successfully.'];
+        $category->delete();
+        return response()->json(['message' => 'Category deleted successfully.']);
     }
 
     public function show(int $id): JsonResponse
     {
         $category = Category::find($id);
-        if(!$category){
-            return response()->json(['error' => 'User not found.'], 404);      
+        if (!$category) {
+            return response()->json(['error' => 'User not found.'], 404);
         }
-        
+
         return response()->json([
             'data' => $category
         ]);
@@ -81,8 +72,12 @@ class CategoryController extends Controller
     public function updateValueByCategory(Request $request): JsonResponse
     {
         $products = Product::where('user_id', $request->user_id)->where('category_id', $request->category_id)->get();
+        if ($products->isEmpty()) {
+            return response()->json(['error' => 'User Id or Category Id not found'], 404);
+        }
 
-           foreach($products as $product){
+        $productsNewPrices = [];
+        foreach ($products as $product) {
             $oldPrice = $product->price;
             $updatedValue = $product->price * ($request->adjustPriceInPercentage / 100);
             $product->price = $product->price + $updatedValue;
@@ -99,5 +94,4 @@ class CategoryController extends Controller
             'data' => $productsNewPrices
         ]);
     }
-
 }

@@ -98,8 +98,7 @@ OBS: Endpoints de criação e atualização possúi uma camada de validação.
 
 Sistema de buscas para manutenção, sendo eles:
 
-* Busca pelos campos name e category (trazer resultados que batem com ambos os campos).
-* Busca por uma categoria específica.
+* Busca pelos campos name e/ou category (trazer resultados que batem com ambos os campos).
 * Busca de produtos com e sem imagem.
 * Buscar um produto pelo seu ID único.
 

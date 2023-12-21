@@ -4,33 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+
 
 class AuthController extends Controller
 {
 
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
-        
+
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
-            ]);            
+        ]);
 
-            if(Auth::attempt($credentials)){
+        if (Auth::attempt($credentials)) {
 
-                $token = $request->user()->createToken('auth_token')->plainTextToken;
+            $token = $request->user()->createToken('auth_token')->plainTextToken;
 
-                return response()->json([
-                    'access_token' => $token,
-                    'token_type' => 'bearer'
-                ]);
-                
-            }
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'bearer'
+            ]);
+        }
 
-            return response()->json(["message" =>"The provided credentials do not match our records."]);
+        return response()->json(["message" => "The provided credentials do not match our records."]);
     }
 }
