@@ -20,7 +20,7 @@ class AuthController extends Controller
             'password' => ['required'],
             ]);            
 
-            if(Auth::attempt($credentials)) {
+            if(Auth::attempt($credentials)){
 
                 $token = $request->user()->createToken('auth_token')->plainTextToken;
 

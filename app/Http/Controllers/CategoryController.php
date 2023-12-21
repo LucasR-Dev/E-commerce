@@ -69,7 +69,7 @@ class CategoryController extends Controller
     public function show(int $id): JsonResponse
     {
         $category = Category::find($id);
-        if (!$category) {
+        if(!$category){
             return response()->json(['error' => 'User not found.'], 404);      
         }
         
@@ -82,7 +82,7 @@ class CategoryController extends Controller
     {
         $products = Product::where('user_id', $request->user_id)->where('category_id', $request->category_id)->get();
 
-           foreach ($products as $product) {
+           foreach($products as $product){
             $oldPrice = $product->price;
             $updatedValue = $product->price * ($request->adjustPriceInPercentage / 100);
             $product->price = $product->price + $updatedValue;
@@ -90,7 +90,7 @@ class CategoryController extends Controller
             $productsNewPrices[] = [
                 'prod_name' => $product->name,
                 'old_price' => $oldPrice,
-                'new_price' => (int) $product->price,
+                'new_price' => $product->price,
             ];
         }
 

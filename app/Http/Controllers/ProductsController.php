@@ -31,7 +31,7 @@ class ProductsController extends Controller
     public function update(StoreUpdateProductsFormRequest $request, int $id): JsonResponse
     {
         $product = Product::find($id);
-        if (!$product) {
+        if(!$product){
             return response()->json(['error' => 'Product not found'], 404);
         }
 
@@ -48,7 +48,7 @@ class ProductsController extends Controller
     {
 
         $product = Product::find($id);
-        if (!$product) {
+        if(!$product){
             return response()->json(['error' => 'Product not found'], 404);
         }
 

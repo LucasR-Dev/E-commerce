@@ -27,23 +27,18 @@ class UsersImport extends Command
      */
     public function handle()
     {
-    $response = Http::get('https://fakestoreapi.com/users');
-    $usersData = $response->json();
-    // dd($usersData);
+        $response = Http::get('https://fakestoreapi.com/users');
+        $usersData = $response->json();
 
-    foreach ($usersData as $userData) {
+        foreach($usersData as $userData){
+            $existingUser = User::where(['email' => $userData['email']])->first();
 
-        
-        // Verifique se o usuário já existe no banco de dados antes de inserir para evitar duplicatas
-        $existingUser = User::where(['email' => $userData['email']])->first();
-
-        if (!$existingUser) {
-            // Se o usuário não existe, insira-o no banco de dados
-            User::create([
-                'name' => $userData['username'],
-                'email' => $userData['email'],
-                'password' => bcrypt($userData['password']),
-            ]);
+            if(!$existingUser){
+                User::create([
+                    'name' => $userData['username'],
+                    'email' => $userData['email'],
+                    'password' => bcrypt($userData['password']),
+                ]);
             }
         }
 

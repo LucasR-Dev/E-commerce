@@ -12,7 +12,7 @@ class ImportProducts extends Command
 {
     protected $signature = 'products:import {--id=} {--user=}';
 
-    protected $description = 'Importa um produto pelo ID';
+    protected $description = 'Importa um produto tanto pelo userId e productId quanto por apenas o userId, sendo obrigatório apenas o userId, ';
 
     public function handle()
     {
@@ -20,34 +20,32 @@ class ImportProducts extends Command
 
         $userId = $this->option('user');
 
-        if (!User::find($userId)) {
-            return $this->error('The user does not exist');
-        }
-
-        if (!$userId) {
+        if(!$userId){
             return $this->error('--user= field is required.');
         }
 
-        if ($productId) {
+        if(!User::find($userId)){
+            return $this->error('The user does not exist');
+        }
+
+        if($productId){
             $response = Http::get('https://fakestoreapi.com/products/' . $productId);
 
-            if (!$response->successful()) {
-                $this->error('Error accessing external API');
-                return;
+            if(!$response->successful()){
+                return $this->error('Error accessing external API');
             }
             $productData = $response->json();
             $this->createProducts($userId, $productData);
-        } else {
+        }else{
             $response = Http::get('https://fakestoreapi.com/products/');
 
-            if (!$response->successful()) {
-                $this->error('Error accessing external API');
-                return;
+            if(!$response->successful()){
+                return $this->error('Error accessing external API');
             }
 
             $productData = $response->json();
 
-            foreach ($productData as $product) {
+            foreach($productData as $product){
                 $this->createProducts($userId, $product);
             }
         }
@@ -70,9 +68,9 @@ class ImportProducts extends Command
 
         $localProduct = Product::where('name', $productData['name'])->first();
 
-        if ($localProduct) {
+        if($localProduct){
             $localProduct->update($productData);
-        } else {
+        }else{
             Product::create($productData);
         }
 
