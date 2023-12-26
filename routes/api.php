@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/api/products', [ProductsController::class, 'store']);
     Route::put('/api/products/{id}', [ProductsController::class, 'update'])->name('products.update');
     Route::delete('/api/products/{id}', [ProductsController::class, 'destroy']);
-    Route::get('/api/product/search/{id}', [ProductsController::class, 'searchProductById']);
+    Route::get('/api/product/search/{id}', [ProductsController::class, 'show']);
     Route::get('/api/products/search', [ProductsController::class, 'searchProductByNameAndCategory']);
     Route::get('/api/products/with-images', [ProductsController::class,'getProductsWithImages']);
     Route::get('/api/products/without-images', [ProductsController::class,'getProductsWithoutImages']);

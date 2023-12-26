@@ -58,7 +58,7 @@ class ProductsController extends Controller
         return response()->json(['message' => 'Product deleted successfully.']);
     }
 
-    public function searchProductById(int $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
         $product = Product::find($id);
         if (!$product) {
